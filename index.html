@@ -1,0 +1,595 @@
+<title>Cheese Ball cho Mây Cà Phê</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;800&family=Inter:wght@400;600;700&display=swap">
+<style>
+/* Design system Algorand (algorand-design/design.md): nền trắng, xanh điện #2D2DF1, chữ navy #001324,
+   tiêu đề đậm line-height 1, UI phẳng tách lớp bằng nền blue-10, bo 10px (nút/input) và 15px (card/panel).
+   Aeonik là font thương mại nên tiêu đề dùng Be Vietnam Pro 700/800 thay thế; nội dung dùng Inter. */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --card: #E9E9FD;          /* blue-10 */
+  --ink: #001324;           /* text-primary */
+  --muted: #66717C;         /* text-muted */
+  --line: #E5E7E9;          /* border */
+  --primary: #2D2DF1;       /* nền nút, panel xanh */
+  --on-primary: #ffffff;
+  --on-primary-soft: #E9E9FD;
+  --link: #2D2DF1;          /* chữ màu xanh trên nền trang */
+  --bar-dim: #BFBFF9;       /* blue-30 */
+  --accent: #17CAC6;        /* teal, chỉ làm điểm nhấn phụ */
+  --accent-soft: #E7FAF9;   /* teal-10 */
+  --good: #0B7F7B;          /* teal đậm cho chữ, đạt AA trên nền trắng */
+  --tam: #A2EAE8;           /* teal-40: đánh dấu số tạm */
+  --tam-ink: #001324;
+  --r-control: 10px;
+  --r-card: 15px;
+  --f-display: "Be Vietnam Pro", "Inter", system-ui, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #001324; --surface: #0A1E31; --card: #121C4E; --ink: #F2F4F6; --muted: #99A1A7; --line: #20344A;
+    --link: #9595F5; --bar-dim: #34348F; --accent-soft: #0B3134; --good: #45D5D1;
+    --tam: #0F5C5A; --tam-ink: #E7FAF9; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #001324; --surface: #0A1E31; --card: #121C4E; --ink: #F2F4F6; --muted: #99A1A7; --line: #20344A;
+  --link: #9595F5; --bar-dim: #34348F; --accent-soft: #0B3134; --good: #45D5D1;
+  --tam: #0F5C5A; --tam-ink: #E7FAF9; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1200px; margin: 0 auto; }
+.prose { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; text-wrap: balance; line-height: 1; margin: 0; color: var(--ink); }
+h1 { font-size: clamp(34px, 5vw, 52px); letter-spacing: -0.02em; line-height: 1.05; }
+h2 { font-size: clamp(30px, 3.6vw, 42px); letter-spacing: -0.015em; line-height: 1.08; }
+h3 { font-size: 20px; line-height: 1.2; }
+p { margin: 0; }
+.lead { font-size: 18px; }
+.eyebrow { font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--link); }
+.num { font-variant-numeric: tabular-nums; }
+.tam { background: var(--tam); color: var(--tam-ink); border-radius: 4px; padding: 0 .3em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+section { padding-block: 80px 0; display: grid; gap: 32px; }
+.head { display: grid; gap: 16px; }
+.head p { color: var(--muted); font-size: 18px; }
+
+/* Panel xanh bo góc trong lề trang */
+.panel { background: var(--primary); color: var(--on-primary); border-radius: var(--r-card); padding: 64px; display: grid; gap: 32px; }
+.panel h2, .panel h3 { color: var(--on-primary); }
+.panel .eyebrow { color: var(--on-primary); }
+.panel .head p, .panel p { color: var(--on-primary-soft); }
+
+/* Nút */
+.btn { font: inherit; font-weight: 600; font-size: 16px; line-height: 24px; padding: 10px 24px; border-radius: var(--r-control); border: 2px solid var(--primary); background: var(--primary); color: var(--on-primary); cursor: pointer; justify-self: start; }
+.btn:hover { box-shadow: 0 0 15px 9px #9595F5; }
+input:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Mở đầu ---------- */
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; padding-block: 48px 24px; overflow-x: clip; }
+.hero > * { min-width: 0; }
+.hero-copy { display: grid; gap: 24px; }
+.hero-copy .lead b { font-weight: 700; }
+.logos { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.logos img { display: block; width: auto; max-width: 100%; }
+.logo-dc { height: 48px; }
+.logo-may { height: 72px; }
+.logos .x { color: var(--muted); font-size: 20px; }
+.logo-dark { display: none !important; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none !important; }
+  :root:not([data-theme="light"]) .logo-dark { display: block !important; }
+}
+:root[data-theme="dark"] .logo-light { display: none !important; }
+:root[data-theme="dark"] .logo-dark { display: block !important; }
+.parties { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: var(--r-control); background: var(--card); color: var(--ink); }
+.chip.teal { background: var(--accent-soft); }
+.note { font-size: 14px; color: var(--muted); }
+
+/* Chồng tấm phối cảnh: điểm nhấn duy nhất của trang */
+.stack { position: relative; height: 440px; perspective: 1400px; }
+.plate {
+  position: absolute; width: 66%; aspect-ratio: 4 / 3; max-width: 100%;
+  border-radius: var(--r-card); overflow: hidden; background: var(--card);
+  transform: rotateX(14deg) rotateY(-30deg) rotateZ(6deg); transform-origin: center;
+}
+.plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.plate.p3 { top: 0; right: 0; }
+.plate.p2 { top: 70px; right: 14%; }
+.plate.p1 { top: 150px; right: 28%; background: var(--primary); display: grid; place-items: center; }
+.plate .label { position: absolute; top: 16px; right: 16px; background: #ffffff; color: #001324; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 4px; }
+.ring-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 64%; }
+.ring-grid span { aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.9); }
+.plate .tech { position: absolute; left: 16px; bottom: 12px; font-size: 11px; color: #E9E9FD; font-variant-numeric: tabular-nums; }
+
+/* ---------- Thẻ & lưới ---------- */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid2 > *, .grid3 > *, .grid4 > * { min-width: 0; }
+.card { background: var(--card); border-radius: var(--r-card); padding: 24px; display: grid; gap: 12px; align-content: start; }
+.card.teal { background: var(--accent-soft); }
+.card.line { background: var(--surface); border: 1px solid var(--line); }
+.card p { color: var(--muted); }
+ul.ticks { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+ul.ticks li { padding-left: 24px; position: relative; }
+ul.ticks li::before { content: ""; position: absolute; left: 2px; top: .5em; width: 8px; height: 8px; border-radius: 2px; background: var(--link); }
+.panel ul.ticks li::before { background: var(--accent); }
+.panel ul.ticks li { color: var(--on-primary); }
+
+.photo { margin: 0; display: grid; gap: 8px; }
+.photo img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 70%; border-radius: var(--r-card); }
+.photo figcaption { font-size: 14px; color: var(--muted); }
+
+/* Quy trình */
+.step .who { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.step .who.us { color: var(--link); }
+.step .who.them { color: var(--good); }
+.flow { counter-reset: step; }
+.step h3::before { counter-increment: step; content: counter(step) ". "; color: var(--muted); font-weight: 700; }
+
+/* Bảng giá */
+.tier { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 32px; display: grid; gap: 16px; align-content: start; position: relative; }
+.tier.best { border: 2px solid var(--primary); }
+.badge { position: absolute; top: -13px; left: 32px; background: var(--primary); color: var(--on-primary); font-size: 12px; font-weight: 600; line-height: 24px; padding: 0 12px; border-radius: var(--r-control); }
+.tier .qty { font-family: var(--f-display); font-size: 24px; font-weight: 700; }
+.tier .price { font-family: var(--f-display); font-size: 52px; font-weight: 800; line-height: 1; color: var(--link); font-variant-numeric: tabular-nums; }
+.tier .price small { font-family: var(--f-body); font-size: 16px; color: var(--muted); font-weight: 400; }
+.scen { overflow-x: auto; }
+table.sc { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+table.sc th, table.sc td { padding: 10px 8px; border-top: 1px solid var(--line); text-align: right; white-space: nowrap; }
+table.sc th:first-child, table.sc td:first-child { text-align: left; padding-left: 0; }
+table.sc thead th { border-top: 0; color: var(--muted); font-weight: 600; font-size: 13px; }
+table.sc .gain { color: var(--good); font-weight: 700; }
+
+/* Combo */
+.combo .time { font-size: 13px; font-weight: 600; color: var(--link); font-variant-numeric: tabular-nums; }
+.combo .deal { font-weight: 700; color: var(--ink); }
+
+/* Hỗ trợ upsell */
+.sup-photo { display: block; width: 100%; max-width: 100%; height: 200px; object-fit: cover; object-position: center 40%; border-radius: var(--r-control); }
+.tag { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--link); }
+
+/* Máy tính */
+.calc { display: grid; grid-template-columns: 360px 1fr; gap: 32px; background: var(--card); border-radius: var(--r-card); padding: 32px; }
+.calc > * { min-width: 0; }
+.controls { display: grid; gap: 24px; align-content: start; }
+.field { display: grid; gap: 8px; }
+.field label { font-weight: 600; font-size: 15px; display: flex; justify-content: space-between; gap: 8px; }
+.field label output { color: var(--link); font-weight: 700; font-variant-numeric: tabular-nums; }
+.field .hint { font-size: 13px; color: var(--muted); }
+input[type="range"] { width: 100%; accent-color: var(--primary); }
+input[type="number"] { width: 100%; font: inherit; font-size: 18px; font-variant-numeric: tabular-nums; padding: 8px 16px; border-radius: var(--r-control); border: 1px solid var(--ink); background: var(--tam); color: var(--tam-ink); }
+.results { display: grid; gap: 24px; align-content: start; }
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.kpi { border-radius: var(--r-control); padding: 16px; background: var(--surface); min-width: 0; display: grid; gap: 4px; }
+.kpi .l { font-size: 13px; color: var(--muted); }
+.kpi .v { font-family: var(--f-display); font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.kpi .s { font-size: 12px; color: var(--muted); }
+.kpi.main { background: var(--primary); }
+.kpi.main .l, .kpi.main .s { color: var(--on-primary-soft); }
+.kpi.main .v { color: var(--on-primary); }
+.chart-wrap { background: var(--surface); border-radius: var(--r-control); padding: 16px; display: grid; gap: 8px; }
+.chart-box { overflow-x: auto; }
+.chart-box svg { display: block; width: 100%; height: auto; min-width: 300px; }
+.chart-title { font-weight: 600; font-size: 15px; }
+.assume { font-size: 13px; color: var(--muted); }
+
+/* Lộ trình */
+.road { display: grid; }
+.road-item { display: grid; grid-template-columns: 160px 1fr; gap: 24px; padding-block: 24px; border-top: 1px solid var(--line); }
+.road-item > * { min-width: 0; }
+.road-item .when { font-weight: 700; color: var(--link); }
+.road-item div { display: grid; gap: 8px; }
+.road-item p { color: var(--muted); }
+
+/* Liên hệ */
+.contact { grid-template-columns: 1fr 1fr; align-items: center; }
+.contact > * { min-width: 0; }
+.contact-card { background: #ffffff; color: #001324; border-radius: var(--r-card); padding: 32px; display: grid; gap: 8px; }
+.contact-card .t { color: #2D2DF1; font-family: var(--f-display); font-size: 20px; font-weight: 700; }
+.contact-card .who { font-size: 18px; font-weight: 600; }
+.phone { font-family: var(--f-display); font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; user-select: all; color: #001324; }
+.contact-card .btn { margin-top: 8px; }
+footer { padding-block: 32px 48px; color: var(--muted); font-size: 14px; }
+
+@media (max-width: 1024px) {
+  .hero, .calc, .contact { grid-template-columns: 1fr; }
+  .grid4 { grid-template-columns: 1fr 1fr; }
+  .grid3 { grid-template-columns: 1fr; }
+  .stack { height: 380px; max-width: 640px; }
+  .panel { padding: 48px 32px; }
+}
+@media (max-width: 640px) {
+  section { padding-block: 64px 0; }
+  .grid2, .grid4, .kpis { grid-template-columns: 1fr; }
+  .stack { height: 280px; }
+  .plate { width: 74%; }
+  .plate.p2 { top: 48px; right: 12%; }
+  .plate.p1 { top: 100px; right: 24%; }
+  .road-item { grid-template-columns: 1fr; gap: 8px; }
+  .panel { padding: 40px 24px; }
+  .calc, .tier { padding: 24px; }
+  .tier .price { font-size: 42px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .plate { transition: transform .4s ease; }
+  .stack:hover .plate.p1 { transform: rotateX(14deg) rotateY(-30deg) rotateZ(6deg) translateY(-8px); }
+}
+</style>
+
+<div class="wrap">
+
+  <!-- 1. Mở đầu -->
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="logos">
+        <img class="logo-dc logo-light" src="assets/logo-dcarmela.png" alt="D'Carmela Pizza and Pasta" width="900" height="293">
+        <img class="logo-dc logo-dark" src="assets/logo-dcarmela-dark.png" alt="D'Carmela Pizza and Pasta" width="900" height="293">
+        <span class="x">×</span>
+        <img class="logo-may" src="assets/logo-may.png" alt="Mây coffee · beer" width="600" height="584">
+      </div>
+      <p class="eyebrow">Đề xuất hợp tác phân phối · 11/2026</p>
+      <h1>Brazilian Cheese Ball tươi mỗi ngày cho Mây Cà Phê.</h1>
+      <p class="lead">Thêm một món ăn kèm bán chạy cho quầy cà phê, không cần bếp, không cần thêm nhân sự. D'Carmela lo trọn khâu nướng, hâm nóng và giao bánh. <b>Mây chỉ việc bán.</b></p>
+      <div class="parties">
+        <span class="chip">Bên cung cấp: D'Carmela Pizza &amp; Pasta</span>
+        <span class="chip teal">Đối tác: Mây Cà Phê</span>
+      </div>
+      <p class="note"><span class="tam">Nền xanh ngọc</span> = số tạm, cần hai bên xác nhận trước khi ký.</p>
+    </div>
+    <div class="stack" aria-hidden="true">
+      <div class="plate p3"><img src="assets/cheese-ball-1.jpg" alt=""><span class="label">Bánh tươi theo order</span></div>
+      <div class="plate p2"><img src="assets/cheese-ball-2.jpg" alt=""><span class="label">Sampling tại quầy</span></div>
+      <div class="plate p1">
+        <div class="ring-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <span class="label">1 phần · 10 viên</span>
+        <span class="tech">giá sỉ từ 32.000đ / phần</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Sản phẩm -->
+  <section>
+    <div class="grid2" style="align-items:center">
+      <div class="head">
+        <p class="eyebrow">Sản phẩm</p>
+        <h2>Brazilian Cheese Ball là gì?</h2>
+        <p>Bánh phô mai nướng kiểu Brazil (pão de queijo), làm từ bột năng và phô mai. Vỏ ngoài giòn nhẹ, ruột dai và béo mùi phô mai. Viên nhỏ vừa miệng, ăn bằng tay, không cần dao nĩa, nên rất hợp ăn kèm cà phê, trà hoặc đồ uống lạnh.</p>
+      </div>
+      <figure class="photo"><img src="assets/cheese-ball-1.jpg" alt="Một khay Brazilian Cheese Ball vừa nướng của D'Carmela" width="1050" height="1400"><figcaption>Ảnh thực tế: Brazilian Cheese Ball của D'Carmela</figcaption></figure>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Vì sao hợp với quán cà phê</h3>
+        <ul class="ticks">
+          <li>Món ăn nhẹ dễ gọi thêm khi khách đã order nước</li>
+          <li>Phục vụ nhanh, không cần chế biến tại quầy</li>
+          <li>Ăn chung được, hợp khách đi nhóm và khách ngồi làm việc lâu</li>
+        </ul>
+      </div>
+      <div class="card teal">
+        <h3>Cam kết chất lượng</h3>
+        <ul class="ticks">
+          <li>Bánh nướng mới theo từng order, giao ngay sau khi nhận order</li>
+          <li>D'Carmela chịu trách nhiệm hâm nóng và đảm bảo bánh đạt chuẩn khi đến tay khách</li>
+          <li>Bánh lỗi được đổi mới, không tính phí</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Mô hình hợp tác -->
+  <section>
+    <div class="head prose">
+      <p class="eyebrow">Mô hình hợp tác</p>
+      <h2>Hợp tác và tăng trưởng doanh thu cùng Mây</h2>
+      <p>Mây không cần nhập hàng trước. Có order nào, D'Carmela làm order đó và tính giá sỉ theo tổng số phần Mây bán được trong tháng.</p>
+    </div>
+    <div class="grid4 flow">
+      <div class="card step"><span class="who them">Mây Cà Phê</span><h3>Bán hàng</h3><p>Nhận order của khách và báo D'Carmela. Doanh số tăng theo từng mốc: dưới 100 phần/tháng giá sỉ 35.000đ, từ 100 phần/tháng giá 32.000đ.</p></div>
+      <div class="card step"><span class="who us">D'Carmela</span><h3>Nướng mới</h3><p>Bánh được nướng ngay sau khi nhận order.</p></div>
+      <div class="card step"><span class="who us">D'Carmela</span><h3>Hâm nóng &amp; giao</h3><p>Hâm nóng, đóng gói và giao tươi đến tiệm.</p></div>
+      <div class="card step"><span class="who them">Mây Cà Phê</span><h3>Phục vụ khách</h3><p>Bán lẻ hoặc trong combo cùng menu cà phê sẵn có.</p></div>
+    </div>
+    <div class="grid2">
+      <div class="card line">
+        <h3>D'Carmela lo</h3>
+        <ul class="ticks">
+          <li>Nguyên liệu, công thức, toàn bộ khâu nướng</li>
+          <li>Hâm nóng và giao bánh tươi theo từng order</li>
+          <li>Đảm bảo chất lượng, đổi bánh lỗi</li>
+          <li>Sampling cho khách dùng thử và thiết kế menu upsell tại quầy</li>
+        </ul>
+      </div>
+      <div class="card line">
+        <h3>Mây Cà Phê chỉ cần</h3>
+        <ul class="ticks">
+          <li>Bán hàng: có order nào báo D'Carmela làm order đó, không cần nhập trước</li>
+          <li>Nhận bánh và phục vụ khách</li>
+          <li>Giới thiệu món và combo với khách</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Bảng giá -->
+  <section>
+    <div class="head prose">
+      <p class="eyebrow">Bảng giá sỉ · đơn vị VNĐ</p>
+      <h2>Bán càng nhiều, giá sỉ càng tốt</h2>
+      <p>Giá tính trên 1 phần 10 viên, theo tổng số phần Mây bán trong tháng. Mỗi mốc có hai kịch bản giá bán: <b>bán lẻ 60.000đ/phần</b> và <b>bán trong combo 55.000đ/phần</b>.</p>
+    </div>
+    <div class="grid2" id="tiers"></div>
+  </section>
+
+  <!-- 5. Combo -->
+  <section>
+    <div class="head prose">
+      <p class="eyebrow">Combo bán kèm</p>
+      <h2>Ba combo để khách gọi thêm</h2>
+      <p>Trong combo, mỗi phần bánh tính 55.000đ thay vì 60.000đ khi mua lẻ. Đồ uống lấy từ menu sẵn có của Mây, giữ nguyên giá.</p>
+    </div>
+    <div class="grid3">
+      <div class="card combo">
+        <span class="time">7:00 – 10:00</span>
+        <h3>Combo Sáng</h3>
+        <p>1 phần bánh + 1 cà phê sữa hoặc bạc xỉu.</p>
+        <p class="deal">Khách tiết kiệm 5.000đ</p>
+        <p>Thay bữa sáng nhanh cho khách đi làm, mang đi được.</p>
+      </div>
+      <div class="card combo">
+        <span class="time">14:00 – 17:00</span>
+        <h3>Combo Chiều Mây</h3>
+        <p>1 phần bánh + 2 ly trà trái cây hoặc đồ uống đá xay.</p>
+        <p class="deal">Khách tiết kiệm 5.000đ</p>
+        <p>Món ăn chung cho hai người trong giờ xế, khung giờ quán thường vắng hơn.</p>
+      </div>
+      <div class="card combo">
+        <span class="time">Cả ngày</span>
+        <h3>Combo Nhóm</h3>
+        <p>2 phần bánh + 3 ly bất kỳ.</p>
+        <p class="deal">Khách tiết kiệm 10.000đ</p>
+        <p>Tăng giá trị mỗi bàn khi khách đi nhóm hoặc họp làm việc.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Hỗ trợ upsell -->
+  <section>
+    <div class="head prose">
+      <p class="eyebrow">Hỗ trợ bán hàng</p>
+      <h2>D'Carmela đồng hành để Mây bán thêm</h2>
+    </div>
+    <div class="grid2">
+      <div class="card line">
+        <img class="sup-photo" src="assets/cheese-ball-2.jpg" alt="Cận cảnh bánh phô mai dùng cho sampling" width="675" height="1200" loading="lazy">
+        <span class="tag">Sampling</span>
+        <h3>Cho khách dùng thử miễn phí</h3>
+        <p>D'Carmela cung cấp một lượng bánh dùng thử có hạn để Mây mời khách nếm tại quầy. Khách thấy và ăn thử trước nên dễ quyết định gọi một phần hoặc một combo.</p>
+        <ul class="ticks">
+          <li>Áp dụng trong đợt ra mắt và các dịp khuyến mãi</li>
+          <li>Số lượng bánh mỗi đợt do hai bên thống nhất</li>
+        </ul>
+      </div>
+      <div class="card line">
+        <span class="tag">Menu upsell</span>
+        <h3>Thiết kế menu tại quầy</h3>
+        <p>D'Carmela thiết kế menu giới thiệu bánh và combo, đặt ngay tại quầy order. Nhân viên chỉ cần gợi ý "thêm một phần bánh không ạ?" khi khách gọi nước.</p>
+        <ul class="ticks">
+          <li>Menu để bàn hoặc standee tại quầy</li>
+          <li>Hình ảnh bánh thực tế, giá lẻ và giá combo rõ ràng</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Lợi ích hai bên -->
+  <section>
+    <div class="panel">
+      <div class="head prose">
+        <p class="eyebrow">Lợi ích hai bên</p>
+        <h2>Cùng tăng doanh thu, mỗi bên làm phần mình giỏi</h2>
+      </div>
+      <div class="grid2">
+        <div style="display:grid; gap:16px; align-content:start">
+          <h3>Mây Cà Phê được gì</h3>
+          <ul class="ticks">
+            <li>Thêm nguồn lãi từ bánh, biên lợi nhuận 36–47% mỗi phần</li>
+            <li>Không nhập hàng trước, không lo tồn kho</li>
+            <li>Không đầu tư lò nướng, không thêm nhân sự bếp</li>
+            <li>Không chịu rủi ro chất lượng: bánh lỗi được đổi</li>
+            <li>Giá trị mỗi đơn tăng nhờ combo, sampling và menu upsell</li>
+          </ul>
+        </div>
+        <div style="display:grid; gap:16px; align-content:start">
+          <h3>D'Carmela được gì</h3>
+          <ul class="ticks">
+            <li>Có điểm bán ổn định, sản lượng tăng dần theo mốc doanh số tháng</li>
+            <li>Thương hiệu được giới thiệu đến tệp khách của Mây</li>
+            <li>Có mô hình mẫu để mở rộng sang các quán cà phê khác</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Tiềm năng -->
+  <section>
+    <div class="head prose">
+      <p class="eyebrow">Tiềm năng kinh doanh</p>
+      <h2>Mây có thể lãi bao nhiêu mỗi tháng?</h2>
+      <p>Kéo thanh trượt để thử các kịch bản. Giá sỉ tự chuyển sang 32.000đ khi tổng số phần trong tháng đạt 100.</p>
+    </div>
+    <div class="calc">
+      <div class="controls">
+        <div class="field">
+          <label for="daily">Số phần bán mỗi ngày <output id="dailyOut">3</output></label>
+          <input type="range" id="daily" min="1" max="10" step="1" value="3">
+          <span class="hint">Tháng tính 30 ngày. Từ 4 phần/ngày (120 phần/tháng) là đạt mốc giá 32.000đ.</span>
+        </div>
+        <div class="field">
+          <label for="combo">Tỷ lệ phần bán trong combo <output id="comboOut">50%</output></label>
+          <input type="range" id="combo" min="0" max="100" step="5" value="50">
+          <span class="hint">Phần còn lại bán lẻ giá 60.000đ. Phần trong combo tính 55.000đ.</span>
+        </div>
+        <div class="field">
+          <label for="drink">Giá trung bình 1 ly nước (đ)</label>
+          <input type="number" id="drink" min="0" max="150000" step="1000" value="35000">
+          <span class="hint">Số tạm, Mây điều chỉnh theo menu. Dùng để ước doanh thu nước đi kèm combo.</span>
+        </div>
+      </div>
+      <div class="results">
+        <div class="kpis">
+          <div class="kpi main"><div class="l">Lãi gộp từ bánh / tháng</div><div class="v" id="kProfit">0</div><div class="s" id="kTier"></div></div>
+          <div class="kpi"><div class="l">Doanh thu bánh / tháng</div><div class="v" id="kRev">0</div><div class="s" id="kPortions"></div></div>
+          <div class="kpi"><div class="l">Doanh thu nước kèm combo / tháng</div><div class="v" id="kDrink">0</div><div class="s">tính 1 ly mỗi phần combo</div></div>
+        </div>
+        <div class="chart-wrap">
+          <p class="chart-title">Lãi gộp từ bánh mỗi tháng theo số phần bán/ngày (cùng tỷ lệ combo)</p>
+          <div class="chart-box"><svg id="chart" viewBox="0 0 560 240" role="img" aria-label="Biểu đồ lãi gộp theo số phần bán mỗi ngày"></svg></div>
+        </div>
+        <p class="assume">Giả định: 1 tháng = 30 ngày, mỗi phần bánh đều đến từ một order của khách nên không có hàng tồn. Lãi gộp = (giá bán − giá sỉ) × số phần. Doanh thu nước là doanh thu, chưa trừ nguyên liệu pha chế. Một năm ≈ <b class="num" id="kYear">0</b> lãi từ bánh.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Lộ trình -->
+  <section>
+    <div class="head prose">
+      <p class="eyebrow">Lộ trình triển khai</p>
+      <h2>Bắt đầu nhỏ, tăng dần theo sức bán</h2>
+    </div>
+    <div class="road">
+      <div class="road-item"><span class="when">Tuần 1–2</span><div><h3>Ra mắt và sampling</h3><p>Đặt menu upsell tại quầy, mời khách dùng thử bánh. Mây bắt đầu bán theo order, hai bên ghi lại số bán theo khung giờ.</p></div></div>
+      <div class="road-item"><span class="when">Tuần 3–4</span><div><h3>Đẩy combo</h3><p>Đưa ba combo lên menu và mạng xã hội của Mây, theo dõi combo nào bán tốt nhất.</p></div></div>
+      <div class="road-item"><span class="when">Cuối tháng 1</span><div><h3>Cùng đánh giá</h3><p>Xem lại số bán, phản hồi của khách và chất lượng giao hàng. Điều chỉnh combo và cách giới thiệu nếu cần.</p></div></div>
+      <div class="road-item"><span class="when">Từ tháng 2</span><div><h3>Đạt mốc 100 phần/tháng</h3><p>Khi Mây bán từ 100 phần trong tháng, giá sỉ tự chuyển xuống 32.000đ/phần, lãi mỗi phần tăng thêm 3.000đ.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 10. Liên hệ -->
+  <section>
+    <div class="panel contact">
+      <div class="head">
+        <p class="eyebrow">Bước tiếp theo</p>
+        <h2>Mời Mây Cà Phê chạy thử 2 tuần</h2>
+        <p>Bắt đầu bán theo order, kèm một đợt sampling để Mây và khách cùng nếm thử trước khi quyết định hợp tác lâu dài.</p>
+      </div>
+      <div class="contact-card">
+        <span class="t">Liên hệ D'Carmela Pizza &amp; Pasta</span>
+        <span class="who">Mrs. Nhi (Emma)</span>
+        <span class="phone" id="phone">0382 470 610</span>
+        <button class="btn" id="copyBtn" type="button">Sao chép số điện thoại</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Đề xuất của D'Carmela Pizza &amp; Pasta gửi Mây Cà Phê · Giá tính bằng VNĐ.</footer>
+</div>
+
+<script>
+(function () {
+  const RETAIL = 60000, COMBO = 55000, DAYS = 30, THRESHOLD = 100;
+  const TIERS = [
+    { label: "Dưới 100 phần/tháng", price: 35000 },
+    { label: "Từ 100 phần/tháng", price: 32000, best: true }
+  ];
+  const fmt = n => Math.round(n).toLocaleString("vi-VN") + "đ";
+  const short = n => n >= 1e6 ? (n / 1e6).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + " tr" : Math.round(n / 1000) + "k";
+  const $ = id => document.getElementById(id);
+  const priceFor = monthly => (monthly >= THRESHOLD ? 32000 : 35000);
+  const pct = (sell, cost) => Math.round((sell - cost) / sell * 100);
+
+  $("tiers").innerHTML = TIERS.map(t => `<div class="tier${t.best ? " best" : ""}">
+      ${t.best ? '<span class="badge">Giá tốt nhất</span>' : ""}
+      <span class="eyebrow">Mốc doanh số</span>
+      <span class="qty">${t.label}</span>
+      <span class="price">${t.price.toLocaleString("vi-VN")}<small> đ / phần</small></span>
+      <div class="scen"><table class="sc">
+        <thead><tr><th>Kịch bản</th><th>Giá bán</th><th>Lãi / phần</th><th>Biên</th></tr></thead>
+        <tbody>
+          <tr><td>Bán lẻ</td><td>${fmt(RETAIL)}</td><td class="gain">${fmt(RETAIL - t.price)}</td><td>${pct(RETAIL, t.price)}%</td></tr>
+          <tr><td>Trong combo</td><td>${fmt(COMBO)}</td><td class="gain">${fmt(COMBO - t.price)}</td><td>${pct(COMBO, t.price)}%</td></tr>
+        </tbody>
+      </table></div>
+    </div>`).join("");
+
+  function monthProfit(daily, share) {
+    const n = daily * DAYS, w = priceFor(n);
+    return n * ((1 - share) * (RETAIL - w) + share * (COMBO - w));
+  }
+
+  function renderChart(share, current) {
+    const svg = $("chart");
+    const W = 560, H = 240, L = 60, R = 12, T = 24, B = 44;
+    const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(d => ({ d, v: monthProfit(d, share) }));
+    const maxV = Math.max(...data.map(x => x.v), 1);
+    const rawStep = maxV / 4, mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+    const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= rawStep);
+    const top = Math.ceil(maxV / step) * step;
+    const y = v => T + (H - T - B) * (1 - v / top);
+    const slot = (W - L - R) / data.length, bw = slot * 0.62;
+    let s = "";
+    for (let v = 0; v <= top + 1e-6; v += step) {
+      s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>`;
+      s += `<text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-body)">${short(v)}</text>`;
+    }
+    // vạch mốc 100 phần/tháng (giữa 3 và 4 phần/ngày)
+    const xm = L + slot * 3;
+    s += `<line x1="${xm}" x2="${xm}" y1="${T - 8}" y2="${H - B}" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 4"/>`;
+    s += `<text x="${xm + 6}" y="${T - 10}" font-size="11" fill="var(--muted)" font-family="var(--f-body)">mốc 100 phần/tháng → giá sỉ 32.000đ</text>`;
+    data.forEach((x, i) => {
+      const cx = L + slot * i + slot / 2;
+      const active = x.d === current;
+      s += `<rect x="${cx - bw / 2}" y="${y(x.v)}" width="${bw}" height="${y(0) - y(x.v)}" rx="3" fill="${active ? "var(--primary)" : "var(--bar-dim)"}"/>`;
+      if (active) s += `<text x="${cx}" y="${y(x.v) - 7}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="var(--f-body)">${short(x.v)}</text>`;
+      s += `<text x="${cx}" y="${H - B + 18}" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="var(--f-body)">${x.d}</text>`;
+    });
+    s += `<text x="${L + (W - L - R) / 2}" y="${H - 6}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-body)">phần bán mỗi ngày</text>`;
+    svg.innerHTML = s;
+  }
+
+  function update() {
+    const daily = Number($("daily").value), share = Number($("combo").value) / 100;
+    const drink = Math.max(0, Number($("drink").value) || 0);
+    const n = daily * DAYS, w = priceFor(n);
+    const profit = monthProfit(daily, share);
+    $("dailyOut").textContent = daily;
+    $("comboOut").textContent = Math.round(share * 100) + "%";
+    $("kProfit").textContent = fmt(profit);
+    $("kTier").textContent = "giá sỉ " + fmt(w) + "/phần";
+    $("kRev").textContent = fmt(n * ((1 - share) * RETAIL + share * COMBO));
+    $("kPortions").textContent = n + " phần/tháng";
+    $("kDrink").textContent = fmt(n * share * drink);
+    $("kYear").textContent = fmt(profit * 12);
+    renderChart(share, daily);
+  }
+
+  ["daily", "combo", "drink"].forEach(id => $(id).addEventListener("input", update));
+  update();
+
+  $("copyBtn").addEventListener("click", () => {
+    const btn = $("copyBtn");
+    const done = () => { btn.textContent = "Đã sao chép"; setTimeout(() => (btn.textContent = "Sao chép số điện thoại"), 1800); };
+    const fallback = () => {
+      const sel = window.getSelection(), range = document.createRange();
+      range.selectNodeContents($("phone")); sel.removeAllRanges(); sel.addRange(range);
+      btn.textContent = "Đã chọn số, nhấn Ctrl/Cmd + C";
+    };
+    try { navigator.clipboard.writeText("0382470610").then(done, fallback); } catch (e) { fallback(); }
+  });
+})();
+</script>
