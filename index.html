@@ -110,8 +110,19 @@ input:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outl
 .plate.p2 { top: 70px; right: 14%; }
 .plate.p1 { top: 150px; right: 28%; background: var(--primary); display: grid; place-items: center; }
 .plate .label { position: absolute; top: 16px; right: 16px; background: #ffffff; color: #001324; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 4px; }
-.ring-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 64%; }
-.ring-grid span { aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.9); }
+.ring-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 70%; }
+/* Mỗi ô là một khay tròn trống, bên trong là một viên cheese ball vẽ bằng CSS */
+.ring-grid span { position: relative; aspect-ratio: 1; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,.75); background: rgba(255,255,255,.08); }
+.ring-grid span::after {
+  content: ""; position: absolute; inset: 7%; border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255,247,222,.95) 0 9%, transparent 22%),
+    radial-gradient(circle at 66% 62%, rgba(150,88,26,.55) 0 5%, transparent 9%),
+    radial-gradient(circle at 40% 70%, rgba(150,88,26,.4) 0 4%, transparent 8%),
+    radial-gradient(circle at 70% 34%, rgba(150,88,26,.35) 0 3%, transparent 7%),
+    radial-gradient(circle at 42% 38%, #FBD889 0%, #E9A847 48%, #B8701F 100%);
+  box-shadow: 0 4px 6px rgba(0,8,40,.35);
+}
 .plate .tech { position: absolute; left: 16px; bottom: 12px; font-size: 11px; color: #E9E9FD; font-variant-numeric: tabular-nums; }
 
 /* ---------- Thẻ & lưới ---------- */
@@ -227,6 +238,9 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: 14px; }
 @media (prefers-reduced-motion: no-preference) {
   .plate { transition: transform .4s ease; }
   .stack:hover .plate.p1 { transform: rotateX(14deg) rotateY(-30deg) rotateZ(6deg) translateY(-8px); }
+  /* Bánh lần lượt rơi vào từng ô khi mở trang */
+  .ring-grid span::after { animation: drop .45s cubic-bezier(.3,1.5,.6,1) both; animation-delay: calc(var(--i) * 90ms + 300ms); }
+  @keyframes drop { from { transform: translateY(-40%) scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
 }
 </style>
 
@@ -254,7 +268,7 @@ footer { padding-block: 32px 48px; color: var(--muted); font-size: 14px; }
       <div class="plate p3"><img src="assets/cheese-ball-1.jpg" alt=""><span class="label">Bánh tươi theo order</span></div>
       <div class="plate p2"><img src="assets/cheese-ball-2.jpg" alt=""><span class="label">Sampling tại quầy</span></div>
       <div class="plate p1">
-        <div class="ring-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="ring-grid"><span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span><span style="--i:5"></span><span style="--i:6"></span><span style="--i:7"></span><span style="--i:8"></span><span style="--i:9"></span></div>
         <span class="label">1 phần · 10 viên</span>
         <span class="tech">giá sỉ từ 32.000đ / phần</span>
       </div>
